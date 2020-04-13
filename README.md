@@ -6,13 +6,23 @@
 
 ## Goal
 To write an implementation of a python interpreter in a language of choice.  
+**Directly execute intermediate bytecode.** Use CPython to generate the intermediary bytecode and use it as input to our interpreter. This allows us to skip semantic and syntactic analysis.
+
 Language choices:
  - **Portabiliy** ( Java/C# - Mono)
  - **Speed** (C, C++, Rust)
  - *Simplicity* (Pypy - JIT)
+ 
+
+
+ ## Roadmap
+ 
+ 
 
 
 ## Resources
 * https://craftinginterpreters.com/
 * https://docs.python.org/3/
 * https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools
+* http://doc.pypy.org/en/latest/interpreter.html
+* CPython internals lectures
