@@ -4,7 +4,12 @@
 
 
 
-
+## Goal
+To write an implementation of a python interpreter in a language of choice.  
+Language choices:
+ - **Portabiliy** ( Java/C# - Mono)
+ - **Speed** (C, C++, Rust)
+ - *Simplicity* (Pypy - JIT)
 
 
 ## Resources
