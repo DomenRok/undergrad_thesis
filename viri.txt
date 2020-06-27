@@ -52,3 +52,5 @@ https://dl.acm.org/doi/abs/10.1145/2833157.2833162
 https://www.diva-portal.org/smash/record.jsf?pid=diva2%3A912464&dswid=-9723
 
 https://dl.acm.org/doi/abs/10.1145/1978907.1978911
+
+https://ieeexplore.ieee.org/abstract/document/7321477/authors#authors
