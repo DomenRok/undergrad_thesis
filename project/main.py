@@ -1,11 +1,16 @@
 """ Main example file """
 
+import types
 import typing as t
 import dis
 import py_compile
 import platform
 import sys
+import struct
+import time
 import marshal
+
+import dis, marshal, struct, sys, time, types
 
 EXAMPLE_PYTHON_FILE = "code_examples/basic.py"
 
@@ -50,53 +55,30 @@ def eval_bytecode(pyc_path):
         return code
 
 
-pyc_path = compile_file(EXAMPLE_PYTHON_FILE)
+def display_code_obj_metadata(code_object):
+    a = code_object
+    print(f"{a.co_argcount} {a.co_cellvars}")
 
-
-def show_file(fname):
-    f = open(fname, "rb")
-    magic = f.read(4)
-    moddate = f.read(4)
-    modtime = time.asctime(time.localtime(struct.unpack('L', moddate)[0]))
-    print "magic %s" % (magic.encode('hex'))
-    print "moddate %s (%s)" % (moddate.encode('hex'), modtime)
-    code = marshal.load(f)
-    show_code(code)
-
-
-def show_code(code, indent=''):
-    print "%scode" % indent
-    indent += '   '
-    print "%sargcount %d" % (indent, code.co_argcount)
-    print "%snlocals %d" % (indent, code.co_nlocals)
-    print "%sstacksize %d" % (indent, code.co_stacksize)
-    print "%sflags %04x" % (indent, code.co_flags)
-    show_hex("code", code.co_code, indent=indent)
-    dis.disassemble(code)
-    print "%sconsts" % indent
-    for const in code.co_consts:
+    print("argcount %d" % (code_object.co_argcount))
+    print("nlocals %d" % (code_object.co_nlocals))
+    print("stacksize %d" % (code_object.co_stacksize))
+    print("flags %04x" % (code_object.co_flags))
+    dis.disassemble(code_object)
+    for const in code_object.co_consts:
         if type(const) == types.CodeType:
-            show_code(const, indent + '   ')
+            display_code_obj_metadata(const)
         else:
-            print "   %s%r" % (indent, const)
-    print "%snames %r" % (indent, code.co_names)
-    print "%svarnames %r" % (indent, code.co_varnames)
-    print "%sfreevars %r" % (indent, code.co_freevars)
-    print "%scellvars %r" % (indent, code.co_cellvars)
-    print "%sfilename %r" % (indent, code.co_filename)
-    print "%sname %r" % (indent, code.co_name)
-    print "%sfirstlineno %d" % (indent, code.co_firstlineno)
-    show_hex("lnotab", code.co_lnotab, indent=indent)
+            print(f"{const}")
+    print(f" names {code_object.co_names}")
+    print(" varnames {code_object.co_varnames}")
+    print(" freevars {code_object.co_freevars}")
+    print(" cellvars {code_object.co_cellvars}")
+    print(" filename {code_object.co_filename}")
+    print(" name %r" % (code_object.co_name))
+    print(" firstlineno %d" % (code_object.co_firstlineno))
 
 
-def show_hex(label, h, indent):
-    h = h.encode('hex')
-    if len(h) < 60:
-        print "%s%s %s" % (indent, label, h)
-    else:
-        print "%s%s" % (indent, label)
-        for i in range(0, len(h), 60):
-            print "%s   %s" % (indent, h[i:i + 60])
+pyc_path = compile_file(EXAMPLE_PYTHON_FILE)
+code_object = eval_bytecode(pyc_path)
 
-
-show_file(pyc_path)
+display_code_obj_metadata(code_object)
