@@ -28,3 +28,9 @@ Language choices:
 * https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools
 * http://doc.pypy.org/en/latest/interpreter.html
 * CPython internals lectures
+
+## Libs
+***Python***
+* https://pypi.org/project/byteplay3/
+* dis
+* inspect
