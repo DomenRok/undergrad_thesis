@@ -1,18 +1,18 @@
-""" Main example file """
+""" Main interpter file """
+
+from settings import BASE_DIR, EXAMPLE_PYTHON_FILE
 
 import types
 import typing as t
 import dis
 import py_compile
-import platform
 import sys
 import struct
-import time
 import marshal
-
+import logging
 import dis, marshal, struct, sys, time, types
 
-EXAMPLE_PYTHON_FILE = "code_examples/basic.py"
+logger = logging.getLogger(__name__)
 
 
 def compile_file(src_file):
@@ -21,7 +21,7 @@ def compile_file(src_file):
 
 
 def eval_bytecode(pyc_path):
-    """ Compiles pyc_path and returns a code object.
+    """Compiles pyc_path and returns a code object.
 
     Gory details in import.c
     more info: https://nedbatchelder.com/blog/200804/the_structure_of_pyc_files.html
@@ -46,8 +46,7 @@ def eval_bytecode(pyc_path):
         # this table. It is correct for Python versions up to 3.9
     ]
 
-    header_size = next(s for s, v in reversed(header_sizes)
-                       if sys.version_info >= v)
+    header_size = next(s for s, v in reversed(header_sizes) if sys.version_info >= v)
 
     with open(pyc_path, "rb") as f:
         metadata = f.read(header_size)  # first header_size bytes are metadata
@@ -59,10 +58,10 @@ def display_code_obj_metadata(code_object):
     a = code_object
     print(f"{a.co_argcount} {a.co_cellvars}")
 
-    print("argcount %d" % (code_object.co_argcount))
-    print("nlocals %d" % (code_object.co_nlocals))
-    print("stacksize %d" % (code_object.co_stacksize))
-    print("flags %04x" % (code_object.co_flags))
+    print(f"argcount  {code_object.co_argcount} ")
+    print(f"nlocals   {code_object.co_nlocals}  ")
+    print(f"stacksize {code_object.co_stacksize}")
+    print(f"flags        {code_object.co_flags} ")
     dis.disassemble(code_object)
     for const in code_object.co_consts:
         if type(const) == types.CodeType:
@@ -70,12 +69,12 @@ def display_code_obj_metadata(code_object):
         else:
             print(f"{const}")
     print(f" names {code_object.co_names}")
-    print(" varnames {code_object.co_varnames}")
-    print(" freevars {code_object.co_freevars}")
-    print(" cellvars {code_object.co_cellvars}")
-    print(" filename {code_object.co_filename}")
-    print(" name %r" % (code_object.co_name))
-    print(" firstlineno %d" % (code_object.co_firstlineno))
+    print(f" varnames {code_object.co_varnames}")
+    print(f" freevars {code_object.co_freevars}")
+    print(f" cellvars {code_object.co_cellvars}")
+    print(f" filename {code_object.co_filename}")
+    print(f" name {code_object.co_name}")
+    print(f" firstlineno {code_object.co_firstlineno}")
 
 
 pyc_path = compile_file(EXAMPLE_PYTHON_FILE)
